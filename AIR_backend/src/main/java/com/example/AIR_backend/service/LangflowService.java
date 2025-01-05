@@ -1,5 +1,7 @@
 package com.example.AIR_backend.service;
 
+import com.example.AIR_backend.model.ChatResponse;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -10,15 +12,8 @@ import java.util.Map;
 
 @Service
 public class LangflowService {
-
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
-
-    @Value("${langflow.base-url}")
-    private String baseURL;
-
-    @Value("${langflow.application-token}")
-    private String applicationToken;
 
     @Value("${langflow.flow-id}")
     private String flowIdOrName;
@@ -26,17 +21,15 @@ public class LangflowService {
     @Value("${langflow.langflow-id}")
     private String langflowId;
 
-    // Initialize WebClient in a separate method to use @Value properties
-    public LangflowService(WebClient.Builder webClientBuilder, ObjectMapper objectMapper) {
-        this.webClient = webClientBuilder.build();
+    public LangflowService(WebClient webClient, ObjectMapper objectMapper) {
+        this.webClient = webClient;
         this.objectMapper = objectMapper;
     }
 
-    public Map<String, Object> runLangflow(String inputValue, String inputType, String outputType, Map<String, Object> tweaks, boolean stream) throws Exception {
-        // Endpoint without baseURL (baseURL is already set in the WebClient)
+    // Single implementation of runLangflow
+    public ChatResponse runLangflow(String inputValue, String inputType, String outputType, Map<String, Object> tweaks, boolean stream) {
         String endpoint = String.format("/lf/%s/api/v1/run/%s?stream=%s", langflowId, flowIdOrName, stream);
 
-        // Prepare request body
         Map<String, Object> requestBody = Map.of(
                 "input_value", inputValue,
                 "input_type", inputType,
@@ -45,25 +38,41 @@ public class LangflowService {
         );
 
         try {
-            // Make the HTTP POST request
             String response = webClient.post()
-                    .uri(baseURL + endpoint)
-                    .header("Authorization", "Bearer " + applicationToken)
-                    .header("Content-Type", "application/json")
+                    .uri(endpoint)
                     .bodyValue(requestBody)
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
 
-            // Parse the JSON response into a Map
-            return objectMapper.readValue(response, Map.class);
+            JsonNode rootNode = objectMapper.readTree(response);
+            JsonNode messageNode = rootNode
+                    .path("outputs")
+                    .path(0)
+                    .path("outputs")
+                    .path(0)
+                    .path("results")
+                    .path("message")
+                    .path("data");
+
+            ChatResponse cleanResponse = new ChatResponse();
+            cleanResponse.setMessage(messageNode.path("text").asText());
+            cleanResponse.setTimestamp(messageNode.path("timestamp").asText());
+            cleanResponse.setSender(messageNode.path("sender").asText());
+            cleanResponse.setError(messageNode.path("error").asBoolean());
+
+            return cleanResponse;
 
         } catch (WebClientResponseException e) {
-            // Handle HTTP errors (4xx and 5xx)
-            throw new RuntimeException("Error response from Langflow API: " + e.getResponseBodyAsString(), e);
+            ChatResponse errorResponse = new ChatResponse();
+            errorResponse.setError(true);
+            errorResponse.setMessage("Error response from Langflow API: " + e.getResponseBodyAsString());
+            return errorResponse;
         } catch (Exception e) {
-            // Handle other exceptions
-            throw new RuntimeException("Error connecting to Langflow API: " + e.getMessage(), e);
+            ChatResponse errorResponse = new ChatResponse();
+            errorResponse.setError(true);
+            errorResponse.setMessage("Error connecting to Langflow API: " + e.getMessage());
+            return errorResponse;
         }
     }
 }
