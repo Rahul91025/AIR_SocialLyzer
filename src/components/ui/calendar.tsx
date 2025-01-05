@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
-import { DayPicker } from "react-day-picker";
+import { DayPicker, DayPickerProps } from "react-day-picker"; // Importing DayPickerProps for typing
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -58,13 +58,13 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        // Now we are passing the props to the IconLeft and IconRight to use
-        IconLeft: (iconProps) => (
+        // Typing props for the Icon components
+        IconLeft: (iconProps: React.ComponentProps<typeof ChevronLeftIcon>) => (
           <ChevronLeftIcon className="h-4 w-4" {...iconProps} />
         ),
-        IconRight: (iconProps) => (
-          <ChevronRightIcon className="h-4 w-4" {...iconProps} />
-        ),
+        IconRight: (
+          iconProps: React.ComponentProps<typeof ChevronRightIcon>
+        ) => <ChevronRightIcon className="h-4 w-4" {...iconProps} />,
       }}
       {...props}
     />
