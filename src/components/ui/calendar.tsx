@@ -57,9 +57,14 @@ function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
-      render={{
-        navPrevButton: () => <ChevronLeftIcon className="h-4 w-4" />,
-        navNextButton: () => <ChevronRightIcon className="h-4 w-4" />,
+      components={{
+        // Now we are passing the props to the IconLeft and IconRight to use
+        IconLeft: (iconProps) => (
+          <ChevronLeftIcon className="h-4 w-4" {...iconProps} />
+        ),
+        IconRight: (iconProps) => (
+          <ChevronRightIcon className="h-4 w-4" {...iconProps} />
+        ),
       }}
       {...props}
     />
