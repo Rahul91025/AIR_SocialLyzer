@@ -2,7 +2,6 @@ import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 import { cn } from "@/lib/utils";
 
-
 const THEMES = { light: "", dark: ".dark" } as const;
 
 export type ChartConfig = {
@@ -185,7 +184,7 @@ const ChartTooltipContent = React.forwardRef<
           {payload.map((item, index) => {
             const key = `${nameKey || item.name || item.dataKey || "value"}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
-            const indicatorColor = color || item.payload.fill || item.color;
+            const indicatorColor = color || item.payload?.fill || item.color;
 
             return (
               <div
@@ -258,74 +257,26 @@ const ChartLegend = RechartsPrimitive.Legend;
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> &
-    Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
-      hideIcon?: boolean;
-      nameKey?: string;
-    }
->(
-  (
-    { className, hideIcon = false, payload, verticalAlign = "bottom", nameKey },
-    ref
-  ) => {
-    const { config } = useChart();
-
-    if (!payload?.length) {
-      return null;
-    }
-
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "flex items-center justify-center gap-4",
-          verticalAlign === "top" ? "pb-3" : "pt-3",
-          className
-        )}
-      >
-        {payload.map((item) => {
-          const key = `${nameKey || item.dataKey || "value"}`;
-          const itemConfig = getPayloadConfigFromPayload(config, item, key);
-
-          return (
-            <div
-              key={item.value}
-              className={cn(
-                "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"
-              )}
-            >
-              {itemConfig?.icon && !hideIcon ? (
-                <itemConfig.icon />
-              ) : (
-                <div
-                  className="h-2.5 w-2.5 rounded-full"
-                  style={{
-                    backgroundColor: item.payload.fill || item.color,
-                  }}
-                />
-              )}
-              <span>{itemConfig?.label || item.value}</span>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
-);
-
+    React.ComponentProps<typeof RechartsPrimitive.Legend>
+>(({ className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "grid gap-2.5 rounded-md bg-background p-1.5 text-xs shadow-md ring-1 ring-border/50",
+        className
+      )}
+      {...props}
+    />
+  );
+});
 ChartLegendContent.displayName = "ChartLegend";
-
-function getPayloadConfigFromPayload(
-  config: ChartConfig,
-  payload: any,
-  key: string
-) {
-  return config[key] || {};
-}
 
 export {
   ChartContainer,
-  ChartTooltip,
+  ChartStyle,
   ChartTooltipContent,
-  ChartLegend,
   ChartLegendContent,
+  ChartTooltip,
+  ChartLegend,
 };
