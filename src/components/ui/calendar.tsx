@@ -1,12 +1,12 @@
 import * as React from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
-import { DayPicker } from "react-day-picker"; // Import DayPicker component
+import { DayPicker, DayPickerProps } from "react-day-picker"; // Import DayPickerProps
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
-// Define the props for the Calendar component
-export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+// Define the props for the Calendar component, including DayPickerProps
+export type CalendarProps = DayPickerProps;
 
 function Calendar({
   className,
@@ -14,6 +14,10 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
+  // TypeScript now knows about onPreviousClick and onNextClick
+  const handlePreviousClick = props.onPreviousClick;
+  const handleNextClick = props.onNextClick;
+
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -58,9 +62,10 @@ function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
+      // Directly handling previous and next button actions
       components={{
-        // Correcting the previous and next button customization
-        Navigation: ({ onPreviousClick, onNextClick }) => (
+        // Custom navigation buttons
+        Nav: ({ onPreviousClick, onNextClick }: any) => (
           <div className="space-x-2 flex items-center">
             <button
               type="button"
