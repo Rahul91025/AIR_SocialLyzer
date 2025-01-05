@@ -13,8 +13,9 @@ export default defineConfig({
     exclude: ["lucide-react"], // Ensures 'lucide-react' is not pre-bundled by Vite
   },
   server: {
-    port: 3000, // Optional: Customize the development server port
+    port: process.env.PORT ? parseInt(process.env.PORT) : 3000, // Use dynamic port from environment variable
     open: true, // Optional: Automatically open the browser
+    host: "0.0.0.0", // Bind to all interfaces (important for deployment on cloud services)
   },
   build: {
     sourcemap: true, // Optional: Useful for debugging the production build
