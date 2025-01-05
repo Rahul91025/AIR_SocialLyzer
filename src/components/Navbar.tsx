@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Menu, X, BarChart2 } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Menu, X, BarChart2 } from "lucide-react";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -10,11 +10,11 @@ const Navbar = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const menuItems = ['Dashboard', 'Features', 'Team', 'Contact'];
+  const menuItems = ["Dashboard", "Features", "Team", "Contact"];
 
   return (
     <motion.nav
@@ -44,7 +44,11 @@ const Navbar = () => {
             {menuItems.map((item) => (
               <motion.a
                 key={item}
-                href={`#${item.toLowerCase()}`}
+                href={
+                  item === "Dashboard"
+                    ? "https://dashboard-sociallyzer.onrender.com/"
+                    : `#${item.toLowerCase()}`
+                }
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className="text-gray-600 hover:text-blue-600 transition-colors"
@@ -86,7 +90,11 @@ const Navbar = () => {
           {menuItems.map((item) => (
             <a
               key={item}
-              href={`#${item.toLowerCase()}`}
+              href={
+                item === "Dashboard"
+                  ? "https://dashboard-sociallyzer.onrender.com/"
+                  : `#${item.toLowerCase()}`
+              }
               className="block px-3 py-2 text-gray-600 hover:text-blue-600 transition-colors"
             >
               {item}
