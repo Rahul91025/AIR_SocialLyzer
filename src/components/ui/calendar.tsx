@@ -58,12 +58,12 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        // Using the correct `Nav` key (uppercase 'N')
+        // Corrected to use `prev` and `next` properties
         Nav: {
-          prevButton: (props: any) => (
+          prev: (props: any) => (
             <ChevronLeftIcon {...props} className="h-4 w-4" />
           ),
-          nextButton: (props: any) => (
+          next: (props: any) => (
             <ChevronRightIcon {...props} className="h-4 w-4" />
           ),
         },
