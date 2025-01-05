@@ -58,8 +58,8 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        // Using the `nav` object to define the left and right icons
-        nav: {
+        // Using the correct `Nav` key (uppercase 'N')
+        Nav: {
           prevButton: (props: any) => (
             <ChevronLeftIcon {...props} className="h-4 w-4" />
           ),
