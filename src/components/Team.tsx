@@ -15,7 +15,7 @@ const teamMembers = [
     },
   },
   {
-    name: "Anish Raj",
+    name: "Anish kumar",
     role: "Java Developer",
     image:
       "https://i.postimg.cc/brVXp3t0/Whats-App-Image-2025-01-05-at-6-38-03-PM.jpg",
@@ -40,7 +40,7 @@ const teamMembers = [
     name: "Akash Bhattacharjee",
     role: "Devops Engineer",
     image:
-      "https://i.postimg.cc/rp7NXWsd/Whats-App-Image-2025-01-05-at-6-55-54-PM.jpg",
+      "https://i.postimg.cc/L4D1qjHr/Whats-App-Image-2025-01-05-at-19-18-39-3c65f2dc.jpg",
     social: {
       linkedin: "https://www.linkedin.com/in/akash-bhattacharjee-b12525215/",
       twitter: "#",
