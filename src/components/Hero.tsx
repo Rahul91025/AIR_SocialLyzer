@@ -95,6 +95,7 @@ const Hero = () => {
                 }}
                 whileTap={{ scale: 0.98 }}
                 className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg transition-all duration-200 shadow-lg"
+                onClick={() => window.location.href = "https://bot-y109.onrender.com/"}
               >
                 Start Analysis
                 <ArrowRight className="ml-2 h-5 w-5 inline" />
