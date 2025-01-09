@@ -57,12 +57,14 @@ const Navbar = () => {
               </motion.a>
             ))}
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
-            >
-              Try Demo
-            </motion.button>
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+  onClick={() => window.location.href = "https://bot-y109.onrender.com/"}
+>
+  Try Demo
+</motion.button>
+
           </div>
 
           {/* Mobile Menu Button */}
@@ -100,9 +102,13 @@ const Navbar = () => {
               {item}
             </a>
           ))}
-          <button onClick={() => window.location.href = "https://bot-y109.onrender.com/"}  className="w-full px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
-            Try Demo
-          </button>
+          <button
+  onClick={() => window.location.href = "https://bot-y109.onrender.com/"}
+  className="w-full px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+>
+  Try Demo
+</button>
+
         </div>
       </motion.div>
       <hr />
