@@ -100,7 +100,7 @@ const Navbar = () => {
               {item}
             </a>
           ))}
-          <button className="w-full px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
+          <button onClick={() => window.location.href = "https://bot-y109.onrender.com/"}  className="w-full px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
             Try Demo
           </button>
         </div>
